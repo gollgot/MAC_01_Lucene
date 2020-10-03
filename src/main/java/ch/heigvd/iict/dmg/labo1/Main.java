@@ -5,8 +5,15 @@ import ch.heigvd.iict.dmg.labo1.parsers.CACMParser;
 import ch.heigvd.iict.dmg.labo1.queries.QueriesPerformer;
 import ch.heigvd.iict.dmg.labo1.similarities.MySimilarity;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.shingle.ShingleAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.similarities.Similarity;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Main {
 
@@ -63,7 +70,19 @@ public class Main {
 		// For the next part "Using different Analyzers" modify this method
 		// and return the appropriate Analyzers asked.
 
-		return new StandardAnalyzer(); // TODO student
+		Analyzer analyzer = null;
+
+		analyzer = new StandardAnalyzer();
+		//analyzer = new WhitespaceAnalyzer();
+		//analyzer = new EnglishAnalyzer();
+		//analyzer = new ShingleAnalyzerWrapper();
+		/*try {
+			analyzer = new StopAnalyzer(Paths.get("common_words.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+
+		return analyzer; // TODO student
 	}
 
 }
