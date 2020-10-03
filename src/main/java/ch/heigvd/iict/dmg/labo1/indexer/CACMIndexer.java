@@ -3,6 +3,7 @@ package ch.heigvd.iict.dmg.labo1.indexer;
 import ch.heigvd.iict.dmg.labo1.parsers.ParserListener;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -55,15 +56,25 @@ public class CACMIndexer implements ParserListener {
 		// for these parameters.
 
 		// Publication ID
-		doc.add(new LongPoint("publication_id", id));
+		doc.add(new LongPoint("id", id));
+		// To store a LongPoint, add separate Store field as described in documentation
+		// https://lucene.apache.org/core/8_6_2/core/org/apache/lucene/document/LongPoint.html
+		doc.add(new StoredField("id", id));
+
 		// Author(s)
-		if(authors != null)
-			doc.add(new StringField("authors", authors, Field.Store.YES));
+		if(authors != null) {
+			String[] authorsTokens = authors.split(";");
+			for( String author : authorsTokens)
+				doc.add(new StringField("authors", author, Field.Store.YES));
+
+		}
+
 		// Title
 		doc.add(new StringField("title", title, Field.Store.YES));
+		
 		// Summary
 		if(summary != null)
-			doc.add(new TextField("summary", summary, Field.Store.NO));
+			doc.add(new TextField("summary", summary, Field.Store.YES));
 
 
 		try {
