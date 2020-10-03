@@ -7,6 +7,7 @@ import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.IndexableFieldType;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -57,24 +58,33 @@ public class CACMIndexer implements ParserListener {
 
 		// Publication ID
 		doc.add(new LongPoint("id", id));
-		// To store a LongPoint, add separate Store field as described in documentation
-		// https://lucene.apache.org/core/8_6_2/core/org/apache/lucene/document/LongPoint.html
-		doc.add(new StoredField("id", id));
+		doc.add(new StoredField("id", id)); // To store a LongPoint, add separate StoreField
 
 		// Author(s)
 		if(authors != null) {
 			String[] authorsTokens = authors.split(";");
 			for( String author : authorsTokens)
 				doc.add(new StringField("authors", author, Field.Store.YES));
-
 		}
 
 		// Title
-		doc.add(new StringField("title", title, Field.Store.YES));
+		doc.add(new TextField("title", title, Field.Store.YES));
 		
 		// Summary
-		if(summary != null)
-			doc.add(new TextField("summary", summary, Field.Store.YES));
+		if(summary != null) {
+			//doc.add(new TextField("summary", summary, Field.Store.YES));
+
+			// TODO term vector aren't accessible in Luke
+			FieldType fieldType = new FieldType();
+			fieldType.setIndexOptions(IndexOptions.DOCS);
+			fieldType.setStored(true);
+			fieldType.setStoreTermVectors(true);
+			fieldType.setStoreTermVectorOffsets(true);
+
+			// Use Field instead of TextField in order to access term vector
+			Field field = new Field("summary", summary, fieldType);
+			doc.add(field);
+		}
 
 
 		try {
