@@ -2,13 +2,14 @@ package ch.heigvd.iict.dmg.labo1.indexer;
 
 import ch.heigvd.iict.dmg.labo1.parsers.ParserListener;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -52,6 +53,18 @@ public class CACMIndexer implements ParserListener {
 		// TODO student: add to the document "doc" the fields given in
 		// parameters. You job is to use the right Field and FieldType
 		// for these parameters.
+
+		// Publication ID
+		doc.add(new LongPoint("publication_id", id));
+		// Author(s)
+		if(authors != null)
+			doc.add(new StringField("authors", authors, Field.Store.YES));
+		// Title
+		doc.add(new StringField("title", title, Field.Store.YES));
+		// Summary
+		if(summary != null)
+			doc.add(new TextField("summary", summary, Field.Store.NO));
+
 
 		try {
 			this.indexWriter.addDocument(doc);
