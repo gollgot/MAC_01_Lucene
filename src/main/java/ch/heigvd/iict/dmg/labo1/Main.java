@@ -60,7 +60,7 @@ public class Main {
 
 			System.out.println("Top 10 authors with the highest number of publications:");
 			for(int i = 0; i < famousAuthors.length; ++i) {
-				System.out.println("\t" + (i + 1) +"." + famousAuthors[i].termtext.utf8ToString()
+				System.out.println("\t" + (i + 1) +". " + famousAuthors[i].termtext.utf8ToString()
 						+ " (" + famousAuthors[i].totalTermFreq + ")");
 			}
 		} catch (Exception e) {
