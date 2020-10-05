@@ -61,7 +61,7 @@ public class CACMIndexer implements ParserListener {
 		doc.add(new StoredField("id", id)); // To store a LongPoint, add separate StoreField
 
 		// Author(s)
-		if(authors != null) {
+		if(authors != null && !authors.isEmpty()) {
 			String[] authorsTokens = authors.split(";");
 			for( String author : authorsTokens)
 				doc.add(new StringField("authors", author, Field.Store.YES));
