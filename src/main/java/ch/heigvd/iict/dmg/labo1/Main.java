@@ -10,10 +10,15 @@ import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.shingle.ShingleAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.misc.HighFreqTerms;
+import org.apache.lucene.misc.TermStats;
 import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 public class Main {
 
@@ -41,7 +46,30 @@ public class Main {
 		searching(queriesPerformer);
 
 		queriesPerformer.close();
-		
+
+		// Display authors with the highest number of publications
+		try {
+			TermStats[] famousAuthors = HighFreqTerms.getHighFreqTerms(
+					DirectoryReader.open(FSDirectory.open(Paths.get("index"))),
+					10,
+					"authors",
+					new Comparator<TermStats>() {
+						@Override
+						public int compare(TermStats o1, TermStats o2) {
+							return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
+						}
+					}
+			);
+
+			System.out.println("Top 10 authors with the highest number of publications:");
+			for(int i = 0; i < famousAuthors.length; ++i) {
+				System.out.println("\t" + (i + 1) +"." + famousAuthors[i].termtext.utf8ToString()
+						+ " (" + famousAuthors[i].totalTermFreq + ")");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private static void readingIndex(QueriesPerformer queriesPerformer) {
