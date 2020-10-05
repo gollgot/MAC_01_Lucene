@@ -72,12 +72,8 @@ public class CACMIndexer implements ParserListener {
 		
 		// Summary
 		if(summary != null) {
-			//doc.add(new TextField("summary", summary, Field.Store.YES));
-
-			// TODO term vector aren't accessible in Luke
 			FieldType fieldType = new FieldType();
 			fieldType.setIndexOptions(IndexOptions.DOCS);
-			fieldType.setStored(true);
 			fieldType.setStoreTermVectors(true);
 			fieldType.setStoreTermVectorOffsets(true);
 
