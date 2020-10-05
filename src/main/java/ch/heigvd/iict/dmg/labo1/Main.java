@@ -53,11 +53,8 @@ public class Main {
 					DirectoryReader.open(FSDirectory.open(Paths.get("index"))),
 					10,
 					"authors",
-					new Comparator<TermStats>() {
-						@Override
-						public int compare(TermStats o1, TermStats o2) {
-							return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
-						}
+					(o1, o2) -> {
+						return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
 					}
 			);
 
