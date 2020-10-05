@@ -46,27 +46,6 @@ public class Main {
 		searching(queriesPerformer);
 
 		queriesPerformer.close();
-
-		// Display authors with the highest number of publications
-		try {
-			TermStats[] famousAuthors = HighFreqTerms.getHighFreqTerms(
-					DirectoryReader.open(FSDirectory.open(Paths.get("index"))),
-					10,
-					"authors",
-					(o1, o2) -> {
-						return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
-					}
-			);
-
-			System.out.println("Top 10 authors with the highest number of publications:");
-			for(int i = 0; i < famousAuthors.length; ++i) {
-				System.out.println("\t" + (i + 1) +". " + famousAuthors[i].termtext.utf8ToString()
-						+ " (" + famousAuthors[i].totalTermFreq + ")");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private static void readingIndex(QueriesPerformer queriesPerformer) {

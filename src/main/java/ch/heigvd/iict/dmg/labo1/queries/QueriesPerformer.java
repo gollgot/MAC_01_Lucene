@@ -3,6 +3,8 @@ package ch.heigvd.iict.dmg.labo1.queries;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.misc.HighFreqTerms;
+import org.apache.lucene.misc.TermStats;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
@@ -11,6 +13,7 @@ import org.apache.lucene.store.FSDirectory;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class QueriesPerformer {
 	
@@ -34,10 +37,24 @@ public class QueriesPerformer {
 	}
 
 	public void printTopRankingTerms(String field, int numTerms) {
-		// TODO student
-		// This methods print the top ranking term for a field.
-		// See "Reading Index".
-	    System.out.println("Top ranking terms for field ["  + field +"] are: ");
+		try {
+			TermStats[] famousAuthors = HighFreqTerms.getHighFreqTerms(
+					indexReader,
+					numTerms,
+					field,
+					(o1, o2) -> {
+						return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
+					}
+			);
+
+			System.out.println("Top "+ numTerms +" ranking terms for field [" + field + "] are: ");
+			for(int i = 0; i < famousAuthors.length; ++i) {
+				System.out.println("\t" + (i + 1) +". " + famousAuthors[i].termtext.utf8ToString()
+						+ " (" + famousAuthors[i].totalTermFreq + ")");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void query(String q) {
