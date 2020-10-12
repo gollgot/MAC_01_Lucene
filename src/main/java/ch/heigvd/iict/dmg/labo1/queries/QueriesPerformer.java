@@ -1,11 +1,16 @@
 package ch.heigvd.iict.dmg.labo1.queries;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.misc.HighFreqTerms;
 import org.apache.lucene.misc.TermStats;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -57,11 +62,32 @@ public class QueriesPerformer {
 		}
 	}
 	
-	public void query(String q) {
+	public void query(String q) throws ParseException, IOException {
 		// TODO student
 		// See "Searching" section
 
-		System.out.println("Searching for [" + q +"]");
+		System.out.println("Searching for " + q);
+
+		// Query parser
+		QueryParser parser = new QueryParser("summary", analyzer);
+		Query query = parser.parse(q);
+
+		// Index reader and searcher
+		Path path = FileSystems.getDefault().getPath("index");
+		Directory dir = FSDirectory.open(path);
+		IndexReader indexReader = DirectoryReader.open(dir);
+		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+
+		// Search query and display results
+
+		ScoreDoc[] hits = indexSearcher.search(query, 1000).scoreDocs;
+		for(ScoreDoc hit : hits) {
+			Document doc = indexSearcher.doc(hit.doc);
+			System.out.println(doc.get("id") + ": "	+ doc.get("title") + " (" + hit.score + ")");
+		}
+
+		indexReader.close();
+		dir.close();
 	}
 	 
 	public void close() {

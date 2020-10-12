@@ -73,9 +73,11 @@ public class CACMIndexer implements ParserListener {
 		// Summary
 		if(summary != null) {
 			FieldType fieldType = new FieldType();
-			fieldType.setIndexOptions(IndexOptions.DOCS);
+			fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+			fieldType.setStored(true);
 			fieldType.setStoreTermVectors(true);
 			fieldType.setStoreTermVectorOffsets(true);
+			fieldType.setStoreTermVectorPositions(true);
 
 			// Use Field instead of TextField in order to access term vector
 			Field field = new Field("summary", summary, fieldType);

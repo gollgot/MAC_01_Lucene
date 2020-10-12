@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.misc.HighFreqTerms;
 import org.apache.lucene.misc.TermStats;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 
@@ -54,9 +55,6 @@ public class Main {
 	}
 
 	private static void searching(QueriesPerformer queriesPerformer) {
-		// Example
-		queriesPerformer.query("compiler program");
-
 		// TODO student
         // queriesPerformer.query(<containing the term Information Retrieval>);
 		// queriesPerformer.query(<containing both Information and Retrieval>);
@@ -64,6 +62,14 @@ public class Main {
         //
 		// Reminder: it must print the total number of results and
 		// the top 10 results.
+
+		try {
+			queriesPerformer.query("\"Information Retrieval\"");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static Analyzer getAnalyzer() {
@@ -76,9 +82,9 @@ public class Main {
 
 		Analyzer analyzer = null;
 
-		analyzer = new StandardAnalyzer();
+		//analyzer = new StandardAnalyzer();
 		//analyzer = new WhitespaceAnalyzer();
-		//analyzer = new EnglishAnalyzer();
+		analyzer = new EnglishAnalyzer();
 		//analyzer = new ShingleAnalyzerWrapper();
 		/*try {
 			analyzer = new StopAnalyzer(Paths.get("common_words.txt"));
