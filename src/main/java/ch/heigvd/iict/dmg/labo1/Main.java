@@ -65,9 +65,11 @@ public class Main {
 
 		try {
 			queriesPerformer.query("\"Information Retrieval\"");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			queriesPerformer.query("\"Information\" AND \"Retrieval\"");
+			queriesPerformer.query("(\"Retrieval\" AND \"Information\" AND -\"Database\") OR (\"Retrieval\" AND -\"Database\")");
+			queriesPerformer.query("Info*");
+			//queriesPerformer.query("\"Information Retrieval\"~5");
+		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
 	}
