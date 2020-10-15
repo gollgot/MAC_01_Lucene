@@ -31,14 +31,16 @@ public class Main {
 		// TODO student "Tuning the Lucene Score"
 //		Similarity similarity = null;//new MySimilarity();
 		Similarity similarity = new MySimilarity();
-		
+
+		System.out.println("********"+System.currentTimeMillis());
 		CACMIndexer indexer = new CACMIndexer(analyser, similarity);
 		indexer.openIndex();
 		CACMParser parser = new CACMParser("documents/cacm.txt", indexer);
 		parser.startParsing();
 		indexer.finalizeIndex();
+		System.out.println("********"+System.currentTimeMillis());
 		
-		QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
+		/*QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
 
 		// Section "Reading Index"
 		readingIndex(queriesPerformer);
@@ -46,7 +48,7 @@ public class Main {
 		// Section "Searching"
 		searching(queriesPerformer);
 
-		queriesPerformer.close();
+		queriesPerformer.close();*/
 	}
 
 	private static void readingIndex(QueriesPerformer queriesPerformer) {
@@ -86,13 +88,14 @@ public class Main {
 
 		//analyzer = new StandardAnalyzer();
 		//analyzer = new WhitespaceAnalyzer();
-		analyzer = new EnglishAnalyzer();
-		//analyzer = new ShingleAnalyzerWrapper();
-		/*try {
+		//analyzer = new EnglishAnalyzer();
+		//analyzer = new ShingleAnalyzerWrapper(2, 2);
+		//analyzer = new ShingleAnalyzerWrapper(3, 3);
+		try {
 			analyzer = new StopAnalyzer(Paths.get("common_words.txt"));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 
 		return analyzer; // TODO student
 	}
