@@ -48,7 +48,7 @@ public class QueriesPerformer {
 					numTerms,
 					field,
 					(o1, o2) -> {
-						return (int)(o1.totalTermFreq - o2.totalTermFreq); // TODO use docFreq or totalTermFreq?
+						return (int)(o1.totalTermFreq - o2.totalTermFreq);
 					}
 			);
 

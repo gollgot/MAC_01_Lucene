@@ -6,20 +6,11 @@ import ch.heigvd.iict.dmg.labo1.queries.QueriesPerformer;
 import ch.heigvd.iict.dmg.labo1.similarities.MySimilarity;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.StopAnalyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.shingle.ShingleAnalyzerWrapper;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.misc.HighFreqTerms;
-import org.apache.lucene.misc.TermStats;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.similarities.Similarity;
-import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Comparator;
 
 public class Main {
 
@@ -40,7 +31,7 @@ public class Main {
 		indexer.finalizeIndex();
 		System.out.println("********"+System.currentTimeMillis());
 		
-		/*QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
+		QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
 
 		// Section "Reading Index"
 		readingIndex(queriesPerformer);
@@ -48,7 +39,7 @@ public class Main {
 		// Section "Searching"
 		searching(queriesPerformer);
 
-		queriesPerformer.close();*/
+		queriesPerformer.close();
 	}
 
 	private static void readingIndex(QueriesPerformer queriesPerformer) {
