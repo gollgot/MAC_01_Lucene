@@ -6,6 +6,7 @@ import ch.heigvd.iict.dmg.labo1.queries.QueriesPerformer;
 import ch.heigvd.iict.dmg.labo1.similarities.MySimilarity;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.similarities.Similarity;
 
@@ -23,13 +24,11 @@ public class Main {
 //		Similarity similarity = null;//new MySimilarity();
 		Similarity similarity = new MySimilarity();
 
-		System.out.println("********"+System.currentTimeMillis());
 		CACMIndexer indexer = new CACMIndexer(analyser, similarity);
 		indexer.openIndex();
 		CACMParser parser = new CACMParser("documents/cacm.txt", indexer);
 		parser.startParsing();
 		indexer.finalizeIndex();
-		System.out.println("********"+System.currentTimeMillis());
 		
 		QueriesPerformer queriesPerformer = new QueriesPerformer(analyser, similarity);
 
@@ -57,11 +56,12 @@ public class Main {
 		// the top 10 results.
 
 		try {
-			queriesPerformer.query("\"Information Retrieval\"");
+			/*queriesPerformer.query("\"Information Retrieval\"");
 			queriesPerformer.query("\"Information\" AND \"Retrieval\"");
 			queriesPerformer.query("(\"Retrieval\" AND \"Information\" AND -\"Database\") OR (\"Retrieval\" AND -\"Database\")");
 			queriesPerformer.query("Info*");
-			queriesPerformer.query("\"Information Retrieval\"~5");
+			queriesPerformer.query("\"Information Retrieval\"~5");*/
+			queriesPerformer.query("compiler program");
 		} catch (ParseException | IOException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +79,7 @@ public class Main {
 
 		//analyzer = new StandardAnalyzer();
 		//analyzer = new WhitespaceAnalyzer();
-		//analyzer = new EnglishAnalyzer();
+		analyzer = new EnglishAnalyzer();
 		//analyzer = new ShingleAnalyzerWrapper(2, 2);
 		//analyzer = new ShingleAnalyzerWrapper(3, 3);
 		try {
