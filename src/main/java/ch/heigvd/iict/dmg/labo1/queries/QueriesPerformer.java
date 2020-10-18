@@ -1,3 +1,9 @@
+/*
+ * Author: Robin Demarta, Loïc Dessaules
+ * File: QueriesPerformer.java
+ * Date: 18.10.2020
+ */
+
 package ch.heigvd.iict.dmg.labo1.queries;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -56,6 +62,7 @@ public class QueriesPerformer {
 				System.out.println("\t" + (i + 1) +". " + famousAuthors[i].termtext.utf8ToString()
 						+ " (" + famousAuthors[i].totalTermFreq + ")");
 			}
+			System.out.println("");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,12 +84,18 @@ public class QueriesPerformer {
 
 		// Search query and display results
 		ScoreDoc[] hits = indexSearcher.search(query, 1000).scoreDocs;
+		System.out.println(hits.length + " Results, top 10: ");
+		int i = 0;
 		for(ScoreDoc hit : hits) {
+			if(i >= 10) {
+				break;
+			}
 			Document doc = indexSearcher.doc(hit.doc);
 			System.out.println(doc.get("id") + ": "	+ doc.get("title") + " (" + hit.score + ")");
+			++i;
 		}
+		System.out.println("");
 
-		indexReader.close();
 		dir.close();
 	}
 	 

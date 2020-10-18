@@ -1,3 +1,9 @@
+/*
+ * Author: Robin Demarta, Loïc Dessaules
+ * File: MySimilarity.java
+ * Date: 18.10.2020
+ */
+
 package ch.heigvd.iict.dmg.labo1.similarities;
 
 import org.apache.lucene.search.similarities.ClassicSimilarity;
@@ -19,6 +25,6 @@ public class MySimilarity extends ClassicSimilarity {
 
     @Override
     public float idf(long docFreq, long docCount) {
-        return (float)Math.log((double)docCount / (docFreq + 1)+1);
+        return (float)Math.log((double)docCount / (docFreq + 1)) + 1;
     }
 }

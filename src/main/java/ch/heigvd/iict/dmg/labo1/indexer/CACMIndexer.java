@@ -1,3 +1,9 @@
+/*
+ * Author: Robin Demarta, Loïc Dessaules
+ * File: CACMIndexer.java
+ * Date: 18.10.2020
+ */
+
 package ch.heigvd.iict.dmg.labo1.indexer;
 
 import ch.heigvd.iict.dmg.labo1.parsers.ParserListener;

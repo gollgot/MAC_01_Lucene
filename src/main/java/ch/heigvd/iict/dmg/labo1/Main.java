@@ -1,3 +1,9 @@
+/*
+ * Author: Robin Demarta, Loïc Dessaules
+ * File: Main.java
+ * Date: 18.10.2020
+ */
+
 package ch.heigvd.iict.dmg.labo1;
 
 import ch.heigvd.iict.dmg.labo1.indexer.CACMIndexer;
@@ -21,7 +27,7 @@ public class Main {
 		Analyzer analyser = getAnalyzer();
 
 		// TODO student "Tuning the Lucene Score"
-//		Similarity similarity = null;//new MySimilarity();
+		//Similarity similarity = null;
 		Similarity similarity = new MySimilarity();
 
 		CACMIndexer indexer = new CACMIndexer(analyser, similarity);
@@ -56,11 +62,11 @@ public class Main {
 		// the top 10 results.
 
 		try {
-			/*queriesPerformer.query("\"Information Retrieval\"");
+			queriesPerformer.query("\"Information Retrieval\"");
 			queriesPerformer.query("\"Information\" AND \"Retrieval\"");
 			queriesPerformer.query("(\"Retrieval\" AND \"Information\" AND -\"Database\") OR (\"Retrieval\" AND -\"Database\")");
 			queriesPerformer.query("Info*");
-			queriesPerformer.query("\"Information Retrieval\"~5");*/
+			queriesPerformer.query("\"Information Retrieval\"~5");
 			queriesPerformer.query("compiler program");
 		} catch (ParseException | IOException e) {
 			e.printStackTrace();
